@@ -1,0 +1,123 @@
+{
+  "schema": "wos-repo.v1",
+  "displayName": "warOnSaaS suite",
+  "apps": [
+    {
+      "surface": "web",
+      "path": "apps/web"
+    },
+    {
+      "surface": "ios",
+      "path": "apps/mobile"
+    },
+    {
+      "surface": "android",
+      "path": "apps/mobile"
+    }
+  ],
+  "defaultBranch": "main",
+  "stack": {
+    "language": "typescript",
+    "runtime": "node",
+    "packageManager": "npm",
+    "nodeVersion": "22"
+  },
+  "install": ["npm", "ci", "--ignore-scripts"],
+  "verify": [
+    {
+      "id": "typecheck",
+      "run": ["npm", "run", "typecheck"],
+      "timeoutSeconds": 900
+    },
+    {
+      "id": "lint",
+      "run": ["npm", "run", "lint"],
+      "timeoutSeconds": 600
+    },
+    {
+      "id": "test",
+      "run": ["npm", "test"],
+      "timeoutSeconds": 1800
+    }
+  ],
+  "protectedPaths": [".github/**", "wos.json", "catalog/**", "roadmaps/**", "features/**", "apps/mobile/eas.json"],
+  "lockfiles": ["package-lock.json"],
+  "toolchainPaths": [
+    "wos.json",
+    "**/package.json",
+    "package-lock.json",
+    "**/tsconfig*.json",
+    "biome.json",
+    "biome.jsonc",
+    "**/vitest.config.*",
+    "**/vitest.workspace.*",
+    "**/vite.config.*",
+    "**/eslint.config.*",
+    "**/.eslintrc*",
+    "**/.prettierrc*",
+    ".npmrc",
+    ".nvmrc"
+  ],
+  "toolchainRequirements": [
+    {
+      "id": "ios-native",
+      "paths": ["apps/mobile/ios/**", "modules/*/native/ios/**", "modules/*/native/*.podspec"],
+      "os": ["macos"],
+      "tools": [
+        {
+          "name": "xcode",
+          "minVersion": "16.0"
+        },
+        {
+          "name": "node",
+          "minVersion": "22.0"
+        }
+      ]
+    },
+    {
+      "id": "android-native",
+      "paths": ["apps/mobile/android/**", "modules/*/native/android/**"],
+      "os": ["macos", "linux", "windows"],
+      "tools": [
+        {
+          "name": "android-sdk",
+          "minVersion": "35"
+        },
+        {
+          "name": "node",
+          "minVersion": "22.0"
+        }
+      ]
+    },
+    {
+      "id": "expo-native-config",
+      "paths": [
+        "apps/mobile/app.json",
+        "apps/mobile/app.config.*",
+        "apps/mobile/plugins/**",
+        "modules/*/native/*.ts",
+        "modules/*/expo-module.config.json"
+      ],
+      "os": ["macos"],
+      "tools": [
+        {
+          "name": "xcode",
+          "minVersion": "16.0"
+        },
+        {
+          "name": "android-sdk",
+          "minVersion": "35"
+        },
+        {
+          "name": "node",
+          "minVersion": "22.0"
+        }
+      ]
+    }
+  ],
+  "browsers": ["chromium", "edge", "webkit", "firefox", "mobile_safari", "mobile_chrome"],
+  "generatedPaths": ["dist/**", "coverage/**"],
+  "migrationsDir": null,
+  "appMigrationsDir": "applications/*/migrations",
+  "maxChangesetBytes": 4000000
+}
